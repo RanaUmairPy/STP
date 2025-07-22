@@ -3,6 +3,7 @@ from sentence_transformers import SentenceTransformer, util
 import os
 import fitz  
 import docx
+import torch
 
 app = Flask(__name__)
 
