@@ -9,9 +9,18 @@ app = Flask(__name__)
 
 #model = SentenceTransformer('all-MiniLM-L6-v2')
 
-model = SentenceTransformer('stsb-roberta-large')
+#model = SentenceTransformer('stsb-roberta-large')
+#------------------------------------------------------------
+model = None
 
+def get_model():
+    global model
+    if model is None:
+        with torch.no_grad():
+            model = SentenceTransformer('stsb-roberta-large')
+    return model
 
+#------------------------------------------------------------
 def extract_text_from_file(file_storage):
     filename = file_storage.filename.lower()
 
@@ -79,8 +88,8 @@ def evaluate_assignment():
         }), 400
 
     # ✅ Similarity Calculation
-    teacher_embedding = model.encode(teacher_text, convert_to_tensor=True)
-    student_embedding = model.encode(student_text, convert_to_tensor=True)
+    teacher_embedding = get_model().encode(teacher_text, convert_to_tensor=True)
+    student_embedding = get_model().encode(student_text, convert_to_tensor=True)
     similarity_score = util.pytorch_cos_sim(teacher_embedding, student_embedding).item()
 
     obtained_marks = round(similarity_score * max_marks, 2)
