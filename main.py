@@ -7,7 +7,10 @@ import docx
 app = Flask(__name__)
 
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+#model = SentenceTransformer('all-MiniLM-L6-v2')
+
+model = SentenceTransformer('stsb-roberta-large')
+
 
 def extract_text_from_file(file_storage):
     filename = file_storage.filename.lower()
